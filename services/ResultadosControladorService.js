@@ -20,7 +20,6 @@ const resultadosPOST = async ({ body }) => {
     throw error;
   }
 
-  // validar faixa da nota
   if (nota < 0 || nota > 20) {
     const error = new Error("A nota deve estar entre 0 e 20");
     error.status = 400;
@@ -45,7 +44,7 @@ const resultadosPOST = async ({ body }) => {
     throw error;
   }
 
-  // validar teste
+  // validar teste existe
   const [teste] = await db.query(
     "SELECT id_disciplina FROM testes WHERE id = ?",
     [id_teste]
@@ -59,7 +58,7 @@ const resultadosPOST = async ({ body }) => {
 
   const idDisciplina = teste[0].id_disciplina;
 
-  // validar que o estudante está inscrito na disciplina do teste
+  // validar inscrição
   const [inscricao] = await db.query(
     "SELECT * FROM inscricoes WHERE id_estudante = ? AND id_disciplina = ?",
     [id_estudante, idDisciplina]
@@ -73,7 +72,6 @@ const resultadosPOST = async ({ body }) => {
     throw error;
   }
 
-  // criar resultado
   const [result] = await db.query(
     "INSERT INTO resultados (nota, id_estudante, id_teste) VALUES (?, ?, ?)",
     [nota, id_estudante, id_teste]
@@ -92,7 +90,14 @@ const resultadosPOST = async ({ body }) => {
  */
 const resultadosIdGET = async ({ id }) => {
   const [rows] = await db.query("SELECT * FROM resultados WHERE id = ?", [id]);
-  return rows[0] || null;
+
+  if (rows.length === 0) {
+    const error = new Error("Resultado não encontrado");
+    error.status = 404;
+    throw error;
+  }
+
+  return rows[0];
 };
 
 /**
@@ -107,7 +112,7 @@ const resultadosIdPUT = async ({ id, body }) => {
     throw error;
   }
 
-  // validar que o resultado existe antes de atualizar
+  // validar existência do resultado
   const [existe] = await db.query(
     "SELECT * FROM resultados WHERE id = ?",
     [id]
@@ -119,7 +124,7 @@ const resultadosIdPUT = async ({ id, body }) => {
     throw error;
   }
 
-  // validar faixa da nota
+  // validar nota
   if (nota < 0 || nota > 20) {
     const error = new Error("A nota deve estar entre 0 e 20");
     error.status = 400;
@@ -158,7 +163,7 @@ const resultadosIdPUT = async ({ id, body }) => {
 
   const idDisciplina = teste[0].id_disciplina;
 
-  // validar inscrição do estudante na disciplina do teste
+  // validar inscrição
   const [inscricao] = await db.query(
     "SELECT * FROM inscricoes WHERE id_estudante = ? AND id_disciplina = ?",
     [id_estudante, idDisciplina]
@@ -172,7 +177,6 @@ const resultadosIdPUT = async ({ id, body }) => {
     throw error;
   }
 
-  // atualizar resultado
   const [result] = await db.query(
     "UPDATE resultados SET nota = ?, id_estudante = ?, id_teste = ? WHERE id = ?",
     [nota, id_estudante, id_teste, id]
@@ -196,7 +200,21 @@ const resultadosIdPUT = async ({ id, body }) => {
  * DELETE /resultados/{id}
  */
 const resultadosIdDELETE = async ({ id }) => {
+  // validar existência
+  const [exists] = await db.query(
+    "SELECT * FROM resultados WHERE id = ?",
+    [id]
+  );
+
+  if (exists.length === 0) {
+    const error = new Error("Resultado não encontrado");
+    error.status = 404;
+    throw error;
+  }
+
+  // apagar
   await db.query("DELETE FROM resultados WHERE id = ?", [id]);
+
   return { message: "Resultado apagado com sucesso" };
 };
 
