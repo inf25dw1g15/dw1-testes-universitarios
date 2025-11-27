@@ -1,1 +1,3 @@
-node_modules
+.openapi-generator/
+node_modules/
+uploaded_files/

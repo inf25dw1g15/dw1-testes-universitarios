@@ -87,3 +87,5 @@
 {"level":"info","message":"Express server running","service":"user-service","timestamp":"2025-11-27T15:06:18.111Z"}
 =======
 >>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
+{"level":"info","message":"Express server running","service":"user-service","timestamp":"2025-11-27T17:58:43.439Z"}
+{"level":"info","message":"Express server running","service":"user-service","timestamp":"2025-11-27T18:06:36.071Z"}
