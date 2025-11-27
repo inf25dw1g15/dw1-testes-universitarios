@@ -1,0 +1,1499 @@
+{
+	"info": {
+		"_postman_id": "6c98120d-e3f0-4c3f-9420-92b00f894bda",
+		"name": "Gestao Testes Universitarios API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48816774",
+		"_collection_link": "https://a046447-2523256.postman.co/workspace/a046447's-Workspace~f49451c8-93b7-4863-8a40-ada5f84567c1/collection/48816774-6c98120d-e3f0-4c3f-9420-92b00f894bda?action=share&source=collection_link&creator=48816774"
+	},
+	"item": [
+		{
+			"name": "Utilizadores",
+			"item": [
+				{
+					"name": "Criar Utilizadores",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 Created\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Extrair ID da resposta\r",
+									"let userId = pm.response.json().id;\r",
+									"\r",
+									"// Guardar o ID na variável *correta*\r",
+									"pm.collectionVariables.set(\"id_utilizador\", userId);\r",
+									"\r",
+									"pm.test(\"ID guardado com sucesso\", function () {\r",
+									"    pm.expect(Number(pm.collectionVariables.get(\"id_utilizador\"))).to.eql(userId);\r",
+									"});\r",
+									"\r",
+									"// ----------------------------------------------------\r",
+									"//  NOVO: Atualizar a variável cargo automaticamente\r",
+									"// ----------------------------------------------------\r",
+									"let cargo = pm.response.json().cargo;\r",
+									"\r",
+									"if (cargo === \"Estudante\") {\r",
+									"    pm.collectionVariables.set(\"cargo\", \"Estudante\");\r",
+									"}\r",
+									"\r",
+									"if (cargo === \"Professor\") {\r",
+									"    pm.collectionVariables.set(\"cargo\", \"Professor\");\r",
+									"}\r",
+									"\r",
+									"// Teste para confirmar que o cargo foi guardado\r",
+									"pm.test(\"Cargo atualizado corretamente\", function () {\r",
+									"    pm.expect(pm.collectionVariables.get(\"cargo\")).to.be.oneOf([\"Estudante\", \"Professor\"]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Test12\",\r\n  \"email\": \"test12@umaia.pt\",\r\n  \"cargo\": \"Estudante\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/utilizadores",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"utilizadores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver Utilizadores",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", () => pm.response.to.have.status(200));\r",
+									"pm.test(\"Resposta é lista\", () => {\r",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/utilizadores",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"utilizadores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver Utilizador em especifico",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let body = pm.response.json();\r",
+									"\r",
+									"pm.test(\"O utilizador tem todos os campos necessários\", () => {\r",
+									"    pm.expect(body).to.have.property(\"id\");\r",
+									"    pm.expect(body).to.have.property(\"nome\");\r",
+									"    pm.expect(body).to.have.property(\"email\");\r",
+									"    pm.expect(body).to.have.property(\"cargo\");\r",
+									"    pm.expect(body).to.have.property(\"criado_em\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Cargo é válido\", () => {\r",
+									"    pm.expect([\"Estudante\", \"Professor\"]).to.include(body.cargo);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/utilizadores/{{id_utilizador}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"utilizadores",
+								"{{id_utilizador}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Utilizador",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// obter o id retornado pela API após atualização\r",
+									"let updatedId = pm.response.json().id;\r",
+									"\r",
+									"// voltar a guardar o valor do ID\r",
+									"pm.collectionVariables.set(\"id_utilizador\", updatedId.toString());\r",
+									"\r",
+									"// confirmar ID atualizado\r",
+									"pm.test(\"id_utilizador atualizado\", function () {\r",
+									"    pm.expect(pm.collectionVariables.get(\"id_utilizador\")).to.eql(updatedId.toString());\r",
+									"});\r",
+									"\r",
+									"// -------------------------------------------\r",
+									"//  NOVO: atualizar variável cargo automaticamente\r",
+									"// -------------------------------------------\r",
+									"\r",
+									"let cargo = pm.response.json().cargo;\r",
+									"\r",
+									"if (cargo === \"Estudante\") {\r",
+									"    pm.collectionVariables.set(\"cargo\", \"Estudante\");\r",
+									"}\r",
+									"\r",
+									"if (cargo === \"Professor\") {\r",
+									"    pm.collectionVariables.set(\"cargo\", \"Professor\");\r",
+									"}\r",
+									"\r",
+									"// Teste para confirmar que o cargo foi guardado\r",
+									"pm.test(\"Cargo atualizado corretamente\", function () {\r",
+									"    pm.expect(pm.collectionVariables.get(\"cargo\")).to.be.oneOf([\"Estudante\", \"Professor\"]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Novo teste2\",\r\n  \"email\": \"novoteste2@umaia.pt\",\r\n  \"cargo\": \"Professor\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/utilizadores/{{id_utilizador}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"utilizadores",
+								"{{id_utilizador}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Apagar Utilizador",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 No Content\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Ler o ID que estava guardado\r",
+									"let deletedId = pm.collectionVariables.get(\"id_utilizador\");\r",
+									"\r",
+									"// Confirmar que existia valor antes de limpar\r",
+									"pm.test(\"ID utilizado no delete é válido\", function () {\r",
+									"    pm.expect(deletedId).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"// ------------------------------------------------\r",
+									"//  LIMPAR VALOR da variável id_utilizador\r",
+									"// ------------------------------------------------\r",
+									"pm.collectionVariables.set(\"id_utilizador\", \"\");\r",
+									"\r",
+									"// Teste correto (com o nome certo da variável!)\r",
+									"pm.test(\"Valor da variável id_utilizador foi limpo\", function () {\r",
+									"    pm.expect(pm.collectionVariables.get(\"id_utilizador\")).to.eql(\"\");\r",
+									"});\r",
+									"\r",
+									"// ------------------------------------------------\r",
+									"//  NOVO: limpar o cargo também\r",
+									"// ------------------------------------------------\r",
+									"pm.collectionVariables.set(\"cargo\", \"\");\r",
+									"\r",
+									"// Teste para confirmar limpeza do cargo\r",
+									"pm.test(\"Valor da variável cargo foi limpo\", function () {\r",
+									"    pm.expect(pm.collectionVariables.get(\"cargo\")).to.eql(\"\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/utilizadores/{{id_utilizador}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"utilizadores",
+								"{{id_utilizador}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Disciplinas",
+			"item": [
+				{
+					"name": "Criar Disciplina",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 Created\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let disciplinaId = pm.response.json().id;\r",
+									"\r",
+									"pm.collectionVariables.set(\"id_disciplina\", disciplinaId);\r",
+									"\r",
+									"pm.test(\"Guardar id_disciplina\", function () {\r",
+									"    pm.expect(pm.collectionVariables.get(\"id_disciplina\")).to.eql(disciplinaId.toString());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"aula matematica avançada\",\r\n  \"descricao\": \"Conceitos de matematica avançados\",\r\n  \"numero_horas\": 90,\r\n  \"id_professor\": {{id_utilizador}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/disciplinas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"disciplinas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver todas as Disciplinas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/disciplinas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"disciplinas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Disciplina especifica",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", () => pm.response.to.have.status(200));\r",
+									"\r",
+									"let body = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Tem nome e descricao\", () => {\r",
+									"    pm.expect(body).to.have.property(\"nome\");\r",
+									"    pm.expect(body).to.have.property(\"descricao\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/disciplinas/{{id_disciplina}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"disciplinas",
+								"{{id_disciplina}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Disciplina",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// obter o id retornado pela API após atualização\r",
+									"let updatedId = pm.response.json().id;\r",
+									"\r",
+									"// voltar a guardar o valor\r",
+									"pm.environment.set(\"id_disciplina\", updatedId.toString());\r",
+									"\r",
+									"// teste a confirmar\r",
+									"pm.test(\"id_utilizadoratualizado atualizado\", function () {\r",
+									"    pm.expect(pm.environment.get(\"id_disciplina\")).to.eql(updatedId.toString());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"não há aula\",\r\n  \"descricao\": \"não existe aula\",\r\n  \"numero_horas\": 9,\r\n  \"id_professor\": 8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/disciplinas/{{id_disciplina}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"disciplinas",
+								"{{id_disciplina}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Apagar Disciplina",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"204 No Content\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"// Ler o ID que estava guardado\r",
+									"let deletedId = pm.collectionVariables.get(\"id_disciplina\");\r",
+									"\r",
+									"// Confirmar que existia valor antes de limpar\r",
+									"pm.test(\"ID utilizado no delete é válido\", function () {\r",
+									"    pm.expect(deletedId).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"// Limpar apenas o VALOR da variável (deixa a variável criada)\r",
+									"pm.collectionVariables.set(\"id_disciplina\", \"\");\r",
+									"\r",
+									"pm.test(\"Valor da variável id_teste foi limpo\", function () {\r",
+									"    pm.expect(pm.collectionVariables.get(\"id_disciplina\")).to.eql(\"\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/disciplinas/{{id_disciplina}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"disciplinas",
+								"{{id_disciplina}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Testes",
+			"item": [
+				{
+					"name": "Criar Testes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// Extrair ID da resposta\r",
+									"let userId = pm.response.json().id;\r",
+									"\r",
+									"// Guardar o ID na variável *correta*\r",
+									"pm.collectionVariables.set(\"id_teste\", userId);\r",
+									"\r",
+									"pm.test(\"ID guardado com sucesso\", function () {\r",
+									"    pm.expect(pm.collectionVariables.get(\"id_teste\")).to.eql(userId.toString());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tema\": \"Mini-teste 6 - SQL\",\r\n  \"data\": \"2025-03-25\",\r\n  \"id_disciplina\": {{id_disciplina}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/testes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"testes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver todos os Testes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", () => pm.response.to.have.status(200));\r",
+									"\r",
+									"pm.test(\"Devolve uma lista\", () => {\r",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/testes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"testes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter teste especifico",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", () => pm.response.to.have.status(200));\r",
+									"\r",
+									"let body = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Tem tema e data\", () => {\r",
+									"    pm.expect(body).to.have.property(\"tema\");\r",
+									"    pm.expect(body).to.have.property(\"data\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/testes/{{id_teste}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"testes",
+								"{{id_teste}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Teste",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// obter o id retornado pela API após atualização\r",
+									"let updatedId = pm.response.json().id;\r",
+									"\r",
+									"// voltar a guardar o valor\r",
+									"pm.environment.set(\"id_teste\", updatedId.toString());\r",
+									"\r",
+									"// teste a confirmar\r",
+									"pm.test(\"id_utilizadoratualizado atualizado\", function () {\r",
+									"    pm.expect(pm.environment.get(\"id_teste\")).to.eql(updatedId.toString());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tema\": \"Mini-teste 1 - SQL (Atualizado)\",\r\n  \"data\": \"2025-03-20\",\r\n  \"id_disciplina\": {{id_disciplina}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/testes/{{id_teste}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"testes",
+								"{{id_teste}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Apagar Teste",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"204 No Content\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"// Ler o ID que estava guardado\r",
+									"let deletedId = pm.collectionVariables.get(\"id_teste\");\r",
+									"\r",
+									"// Confirmar que existia valor antes de limpar\r",
+									"pm.test(\"ID utilizado no delete é válido\", function () {\r",
+									"    pm.expect(deletedId).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"// Limpar apenas o VALOR da variável (deixa a variável criada)\r",
+									"pm.collectionVariables.set(\"id_teste\", \"\");\r",
+									"\r",
+									"pm.test(\"Valor da variável id_teste foi limpo\", function () {\r",
+									"    pm.expect(pm.collectionVariables.get(\"id_teste\")).to.eql(\"\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/testes/{{id_teste}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"testes",
+								"{{id_teste}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Resultados",
+			"item": [
+				{
+					"name": "Criar Resultado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// Extrair ID da resposta\r",
+									"let userId = pm.response.json().id;\r",
+									"\r",
+									"// Guardar o ID na variável *correta*\r",
+									"pm.collectionVariables.set(\"id_resultado\", userId);\r",
+									"\r",
+									"pm.test(\"ID guardado com sucesso\", function () {\r",
+									"    pm.expect(pm.collectionVariables.get(\"id_resultado\")).to.eql(userId.toString());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id_teste\": {{id_teste}},\r\n  \"id_estudante\": {{id_utilizador}},\r\n  \"nota\": 18\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/resultados",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resultados"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver todos os resultados",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", () => pm.response.to.have.status(200));\r",
+									"\r",
+									"pm.test(\"Devolve uma lista\", () => {\r",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/resultados",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resultados"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver resultado em especifico",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", () => pm.response.to.have.status(200));\r",
+									"\r",
+									"let body = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Tem id_teste e nota\", () => {\r",
+									"    pm.expect(body).to.have.property(\"id_teste\");\r",
+									"    pm.expect(body).to.have.property(\"nota\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/resultados/{{id_resultado}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resultados",
+								"{{id_resultado}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Resultado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// obter o id retornado pela API após atualização\r",
+									"let updatedId = pm.response.json().id;\r",
+									"\r",
+									"// voltar a guardar o valor\r",
+									"pm.environment.set(\"id_resultado\", updatedId.toString());\r",
+									"\r",
+									"// teste a confirmar\r",
+									"pm.test(\"id_utilizadoratualizado atualizado\", function () {\r",
+									"    pm.expect(pm.environment.get(\"id_resultado\")).to.eql(updatedId.toString());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id_teste\": {{id_teste}},\r\n  \"id_estudante\": {{id_utilizador}},\r\n  \"nota\": 18\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/resultados/{{id_resultado}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resultados",
+								"{{id_resultado}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Apagar Resultado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"204 No Content\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"// Ler o ID que estava guardado\r",
+									"let deletedId = pm.collectionVariables.get(\"id_teste\");\r",
+									"\r",
+									"// Confirmar que existia valor antes de limpar\r",
+									"pm.test(\"ID utilizado no delete é válido\", function () {\r",
+									"    pm.expect(deletedId).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"// Limpar apenas o VALOR da variável (deixa a variável criada)\r",
+									"pm.collectionVariables.set(\"id_resultado\", \"\");\r",
+									"\r",
+									"pm.test(\"Valor da variável id_teste foi limpo\", function () {\r",
+									"    pm.expect(pm.collectionVariables.get(\"id_resultado\")).to.eql(\"\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/resultados/{{id_resultado}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resultados",
+								"{{id_resultado}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Endpoints Especificos",
+			"item": [
+				{
+					"name": "Obter alunos de uma disciplina",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/disciplinas/{{id_disciplina}}/alunos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"disciplinas",
+								"{{id_disciplina}}",
+								"alunos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter testes de uma disciplina",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/disciplinas/{{id_disciplina}}/testes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"disciplinas",
+								"{{id_disciplina}}",
+								"testes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter classificações de um teste",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/testes/{{id_teste}}/resultados",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"testes",
+								"{{id_teste}}",
+								"resultados"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter disciplinas de um aluno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/alunos/{{id_utilizador}}/disciplinas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"alunos",
+								"{{id_utilizador}}",
+								"disciplinas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter classificações de um aluno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/estudantes/{{id_utilizador}}/classificacoes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"estudantes",
+								"{{id_utilizador}}",
+								"classificacoes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ver utilizadores por cargo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/utilizadores/cargo/{{cargo}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"utilizadores",
+								"cargo",
+								"{{cargo}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ver disciplina do utilizador por cargo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/utilizadores/cargo/{{cargo}}/{{id_utilizador}}/disciplinas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"utilizadores",
+								"cargo",
+								"{{cargo}}",
+								"{{id_utilizador}}",
+								"disciplinas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter inscrições de uma disciplina",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/disciplinas/{{id_disciplina}}/inscricoes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"disciplinas",
+								"{{id_disciplina}}",
+								"inscricoes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter inscrições de um estudante",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/utilizadores/Estudante/{{id_inscricao}}/inscricoes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"utilizadores",
+								"Estudante",
+								"{{id_inscricao}}",
+								"inscricoes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inscrições",
+			"item": [
+				{
+					"name": "Criar inscrição",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// Extrair ID da resposta\r",
+									"let userId = pm.response.json().id;\r",
+									"\r",
+									"// Guardar o ID na variável *correta*\r",
+									"pm.collectionVariables.set(\"id_inscricao\", userId);\r",
+									"\r",
+									"pm.test(\"ID guardado com sucesso\", function () {\r",
+									"    pm.expect(pm.collectionVariables.get(\"id_inscricao\")).to.eql(userId.toString());\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_estudante\": {{id_utilizador}},\r\n    \"id_disciplina\": {{id_disciplina}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/inscricoes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inscricoes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver todas as inscrições",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let list = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Resposta é uma lista\", () => {\r",
+									"    pm.expect(list).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Cada inscrição tem os campos esperados\", () => {\r",
+									"    if (list.length > 0) {\r",
+									"        pm.expect(list[0]).to.have.property(\"id\");\r",
+									"        pm.expect(list[0]).to.have.property(\"id_estudante\");\r",
+									"        pm.expect(list[0]).to.have.property(\"id_disciplina\");\r",
+									"        pm.expect(list[0]).to.have.property(\"data_inscricao\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/inscricoes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inscricoes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver inscrição em especifico",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 OK\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let body = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Inscrição contém os campos completos\", () => {\r",
+									"    pm.expect(body).to.have.property(\"id\");\r",
+									"    pm.expect(body).to.have.property(\"id_estudante\");\r",
+									"    pm.expect(body).to.have.property(\"id_disciplina\");\r",
+									"    pm.expect(body).to.have.property(\"data_inscricao\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/inscricoes/{{id_inscricao}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inscricoes",
+								"{{id_inscricao}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Apagar Inscrição",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"204 No Content\", () => {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"// limpar valor mas manter variável\r",
+									"pm.environment.set(\"id_inscricao\", \"\");\r",
+									"\r",
+									"pm.test(\"Valor da variável id_inscricao limpo\", () => {\r",
+									"    pm.expect(pm.environment.get(\"id_inscricao\")).to.eql(\"\");\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/inscricoes/{{id_inscricao}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inscricoes",
+								"{{id_inscricao}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar a inscrição",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id_estudante\": 5,\r\n  \"id_disciplina\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/inscricoes/{{id_inscricao}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inscricoes",
+								"{{id_inscricao}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "id_utilizador",
+			"value": ""
+		},
+		{
+			"key": "id_disciplina",
+			"value": ""
+		},
+		{
+			"key": "id_resultado",
+			"value": ""
+		},
+		{
+			"key": "id_teste",
+			"value": ""
+		},
+		{
+			"key": "cargo",
+			"value": ""
+		},
+		{
+			"key": "id_inscricao",
+			"value": ""
+		}
+	]
+}
