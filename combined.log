@@ -1,4 +1,5 @@
 {"level":"info","message":"Express server running","service":"user-service","timestamp":"2025-11-23T19:04:18.895Z"}
+<<<<<<< HEAD
 {"level":"info","message":"Express server running","service":"user-service","timestamp":"2025-11-25T09:59:19.384Z"}
 {"level":"info","message":"Express server running","service":"user-service","timestamp":"2025-11-25T10:04:11.904Z"}
 {"level":"info","message":"Express server running","service":"user-service","timestamp":"2025-11-25T10:08:25.428Z"}
@@ -84,3 +85,5 @@
 {"level":"info","message":"Express server running","service":"user-service","timestamp":"2025-11-27T13:24:52.829Z"}
 {"level":"info","message":"Express server running","service":"user-service","timestamp":"2025-11-27T13:45:55.806Z"}
 {"level":"info","message":"Express server running","service":"user-service","timestamp":"2025-11-27T15:06:18.111Z"}
+=======
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45

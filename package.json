@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "gest-o-de-testes-universit-rios",
+=======
+  "name":  "gest-o-de-testes-universit-rios",
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
   "version": "1.0.0",
   "description": "REST API para gerir os testes universitários de uma universidade.",
   "main": "index.js",
@@ -21,7 +25,10 @@
     "express": "^4.16.4",
     "express-openapi-validator": "^4.13.8",
     "js-yaml": "^3.3.0",
+<<<<<<< HEAD
     "mysql2": "^3.15.3",
+=======
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
     "ono": "^5.0.1",
     "openapi-sampler": "^1.0.0-beta.15",
     "swagger-ui-express": "^4.0.2",

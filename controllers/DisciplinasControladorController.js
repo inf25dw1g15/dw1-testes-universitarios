@@ -37,10 +37,13 @@ const disciplinasPOST = async (request, response) => {
 };
 
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
 module.exports = {
   disciplinasGET,
   disciplinasIdAlunosGET,
@@ -49,5 +52,8 @@ module.exports = {
   disciplinasIdPUT,
   disciplinasIdTestesGET,
   disciplinasPOST,
+<<<<<<< HEAD
   
+=======
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
 };

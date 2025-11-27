@@ -1,4 +1,5 @@
 openapi: 3.0.0
+<<<<<<< HEAD
 
 info:
   title: Gestão de Testes Universitários
@@ -9,10 +10,20 @@ servers:
   - description: Servidor local
     url: http://localhost:3000
 
+=======
+info:
+  description: REST API para gerir os testes universitários de uma universidade.
+  title: Gestão de Testes Universitários
+  version: 1.0.0
+servers:
+- description: Servidor local
+  url: http://localhost:3000
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
 paths:
   /utilizadores:
     get:
       operationId: utilizadoresGET
+<<<<<<< HEAD
       summary: Retrieve all users
       tags:
         - Utilizadores Controlador
@@ -34,10 +45,29 @@ paths:
         - Utilizadores Controlador
       requestBody:
         required: true
+=======
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Utilizadores"
+                type: array
+          description: Array of student model instances
+      summary: Retriveve all users.
+      tags:
+      - Utilizadores Controlador
+      x-eov-operation-handler: controllers/UtilizadoresControladorController
+    post:
+      operationId: utilizadoresPOST
+      requestBody:
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/Utilizadores"
+<<<<<<< HEAD
       responses:
         "200":
           description: Create a new user
@@ -59,10 +89,80 @@ paths:
       responses:
         "200":
           description: User found
+=======
+        required: true
+      responses:
+        "201":
+          description: Create a users model instance
+      summary: Create one utilizador
+      tags:
+      - Utilizadores Controlador
+      x-eov-operation-handler: controllers/UtilizadoresControladorController
+  /utilizadores/{cargo}:
+    get:
+      operationId: utilizadoresCargoGET
+      parameters:
+      - explode: false
+        in: path
+        name: cargo
+        required: true
+        schema:
+          enum:
+          - Estudante
+          - Professor
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Utilizadores"
+                type: array
+          description: Array of user model instances
+      summary: Retrieve all users with specific roles.
+      tags:
+      - Utilizadores Controlador
+      x-eov-operation-handler: controllers/UtilizadoresControladorController
+  /utilizadores/{id}:
+    delete:
+      operationId: utilizadoresIdDELETE
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: User Deleted.
+      summary: Delete a specific User
+      tags:
+      - Utilizadores Controlador
+      x-eov-operation-handler: controllers/UtilizadoresControladorController
+    get:
+      operationId: utilizadoresIdGET
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Utilizadores"
+<<<<<<< HEAD
         "404":
           description: User not found
       x-eov-operation-handler: controllers/UtilizadoresControladorController
@@ -81,10 +181,32 @@ paths:
             format: int64
       requestBody:
         required: true
+=======
+          description: User found
+        "404":
+          description: User not found
+      summary: Retrieve a specific user
+      tags:
+      - Utilizadores Controlador
+      x-eov-operation-handler: controllers/UtilizadoresControladorController
+    put:
+      operationId: utilizadoresIdPUT
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/Utilizadores"
+<<<<<<< HEAD
       responses:
         "200":
           description: User updated
@@ -215,10 +337,102 @@ paths:
         - Disciplinas Controlador
       requestBody:
         required: true
+=======
+        required: true
+      responses:
+        "200":
+          description: User Updated.
+      summary: Update a specific user
+      tags:
+      - Utilizadores Controlador
+      x-eov-operation-handler: controllers/UtilizadoresControladorController
+  /utilizadores/{cargo}/{id}/disciplinas:
+    get:
+      operationId: utilizadoresCargoIdDisciplinasGET
+      parameters:
+      - explode: false
+        in: path
+        name: cargo
+        required: true
+        schema:
+          enum:
+          - Estudante
+          - Professor
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Disciplinas"
+                type: array
+          description: Array of subject model
+      summary: Retrieve all the subjects where each user is subscribed
+      tags:
+      - Utilizadores Controlador
+      x-eov-operation-handler: controllers/UtilizadoresControladorController
+  /utilizadores/Estudante/{id}/resultados:
+    get:
+      operationId: utilizadoresEstudanteIdResultadosGET
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Resultados"
+                type: array
+          description: Array Results Model
+        "404":
+          description: Student not found
+      summary: Retrieve all results
+      tags:
+      - Utilizadores Controlador
+      x-eov-operation-handler: controllers/UtilizadoresControladorController
+  /disciplinas:
+    get:
+      operationId: disciplinasGET
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Disciplinas"
+                type: array
+          description: Array of all subjects
+      summary: Retrieve all subjects
+      tags:
+      - Disciplinas Controlador
+      x-eov-operation-handler: controllers/DisciplinasControladorController
+    post:
+      operationId: disciplinasPOST
+      requestBody:
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/Disciplinas"
+<<<<<<< HEAD
       responses:
         "201":
           description: Subject Created
@@ -240,10 +454,53 @@ paths:
       responses:
         "200":
           description: Found subject
+=======
+        required: true
+      responses:
+        "201":
+          description: Subject Created
+      summary: Create a Subject
+      tags:
+      - Disciplinas Controlador
+      x-eov-operation-handler: controllers/DisciplinasControladorController
+  /disciplinas/{id}:
+    delete:
+      operationId: disciplinasIdDELETE
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Subject Deleted.
+      summary: Delete a specific subject
+      tags:
+      - Disciplinas Controlador
+      x-eov-operation-handler: controllers/DisciplinasControladorController
+    get:
+      operationId: disciplinasIdGET
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Disciplinas"
+<<<<<<< HEAD
         "404":
           description: Not found subject
       x-eov-operation-handler: controllers/DisciplinasControladorController
@@ -262,10 +519,32 @@ paths:
             format: int64
       requestBody:
         required: true
+=======
+          description: Found subject
+        "404":
+          description: Not found subject
+      summary: Retrieve a specific subject
+      tags:
+      - Disciplinas Controlador
+      x-eov-operation-handler: controllers/DisciplinasControladorController
+    put:
+      operationId: disciplinasIdPUT
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/Disciplinas"
+<<<<<<< HEAD
       responses:
         "200":
           description: Subjects Updated.
@@ -304,10 +583,35 @@ paths:
       responses:
         "200":
           description: Array of students
+=======
+        required: true
+      responses:
+        "200":
+          description: Subjects Updated.
+      summary: Update a specific subject
+      tags:
+      - Disciplinas Controlador
+      x-eov-operation-handler: controllers/DisciplinasControladorController
+  /disciplinas/{id}/alunos:
+    get:
+      operationId: disciplinasIdAlunosGET
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Utilizadores"
+<<<<<<< HEAD
         "404":
           description: Not found subject
       x-eov-operation-handler: controllers/DisciplinasControladorController
@@ -550,10 +854,34 @@ paths:
       responses:
         "200":
           description: Found test
+=======
+          description: Array of students
+        "404":
+          description: Not found subject
+      summary: List all students subscribed in subject
+      tags:
+      - Disciplinas Controlador
+      x-eov-operation-handler: controllers/DisciplinasControladorController
+  /disciplinas/{id}/testes:
+    get:
+      operationId: disciplinasIdTestesGET
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Testes"
+<<<<<<< HEAD
         "404":
           description: Not found test
       x-eov-operation-handler: controllers/TestesControladorController
@@ -572,10 +900,39 @@ paths:
             format: int64
       requestBody:
         required: true
+=======
+          description: Array of tests
+        "404":
+          description: Not found subject
+      summary: List all tests subscribed in subject
+      tags:
+      - Disciplinas Controlador
+      x-eov-operation-handler: controllers/DisciplinasControladorController
+  /testes:
+    get:
+      operationId: testesGET
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Testes"
+                type: array
+          description: Array of all tests
+      summary: Retrieve all tests
+      tags:
+      - Testes Controlador
+      x-eov-operation-handler: controllers/TestesControladorController
+    post:
+      operationId: testesPOST
+      requestBody:
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/Testes"
+<<<<<<< HEAD
       responses:
         "200":
           description: Tests Updated.
@@ -677,10 +1034,102 @@ paths:
       responses:
         "200":
           description: Found result
+=======
+        required: true
+      responses:
+        "201":
+          description: Test Created
+      summary: Create a Test
+      tags:
+      - Testes Controlador
+      x-eov-operation-handler: controllers/TestesControladorController
+  /testes/{id}:
+    delete:
+      operationId: testesIdDELETE
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Test Deleted.
+      summary: Delete a specific test
+      tags:
+      - Testes Controlador
+      x-eov-operation-handler: controllers/TestesControladorController
+    get:
+      operationId: testesIdGET
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Testes"
+          description: Found test
+        "404":
+          description: Not found test
+      summary: Retrieve a specific test
+      tags:
+      - Testes Controlador
+      x-eov-operation-handler: controllers/TestesControladorController
+    put:
+      operationId: testesIdPUT
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Testes"
+        required: true
+      responses:
+        "200":
+          description: Tests Updated.
+      summary: Update a specific test
+      tags:
+      - Testes Controlador
+      x-eov-operation-handler: controllers/TestesControladorController
+  /testes/{id}/resultados:
+    get:
+      operationId: testesIdResultadosGET
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Resultados"
+<<<<<<< HEAD
         "404":
           description: Not found result
       x-eov-operation-handler: controllers/ResultadosControladorController
@@ -699,10 +1148,39 @@ paths:
             format: int64
       requestBody:
         required: true
+=======
+          description: Array Result Model
+        "404":
+          description: Not found test
+      summary: Retrieve all results in specific test
+      tags:
+      - Testes Controlador
+      x-eov-operation-handler: controllers/TestesControladorController
+  /resultados:
+    get:
+      operationId: resultadosGET
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Resultados"
+                type: array
+          description: Array of all results
+      summary: Retrieve all results
+      tags:
+      - Resultados Controlador
+      x-eov-operation-handler: controllers/ResultadosControladorController
+    post:
+      operationId: resultadosPOST
+      requestBody:
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/Resultados"
+<<<<<<< HEAD
       responses:
         "200":
           description: Results Updated.
@@ -843,3 +1321,202 @@ components:
         id_disciplina:
           type: integer
           example: 101
+=======
+        required: true
+      responses:
+        "201":
+          description: Result Created
+      summary: Create a Result
+      tags:
+      - Resultados Controlador
+      x-eov-operation-handler: controllers/ResultadosControladorController
+  /resultados/{id}:
+    delete:
+      operationId: resultadosIdDELETE
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Result Deleted.
+      summary: Delete a specific result
+      tags:
+      - Resultados Controlador
+      x-eov-operation-handler: controllers/ResultadosControladorController
+    get:
+      operationId: resultadosIdGET
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Resultados"
+          description: Found result
+        "404":
+          description: Not found result
+      summary: Retrieve a specific result
+      tags:
+      - Resultados Controlador
+      x-eov-operation-handler: controllers/ResultadosControladorController
+    put:
+      operationId: resultadosIdPUT
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Resultados"
+        required: true
+      responses:
+        "200":
+          description: Results Updated.
+      summary: Update a specific result
+      tags:
+      - Resultados Controlador
+      x-eov-operation-handler: controllers/ResultadosControladorController
+components:
+  schemas:
+    Utilizadores:
+      example:
+        criado_em: 2025-04-10
+        nome: André Pereira
+        id: 1
+        cargo: Estudante
+        email: A046761@umaia.pt
+      properties:
+        id:
+          example: 1
+          format: int64
+          type: integer
+        nome:
+          example: André Pereira
+          type: string
+        email:
+          example: A046761@umaia.pt
+          type: string
+        cargo:
+          enum:
+          - Estudante
+          - Professor
+          example: Estudante
+          type: string
+        criado_em:
+          example: 2025-04-10
+          type: string
+      required:
+      - cargo
+      - email
+      - nome
+      type: object
+    Disciplinas:
+      example:
+        criado_em: 2025-04-05
+        numero_horas: 200
+        nome: Disciplina de Desenvolvimento Web 1
+        id_professor: 8
+        id: 101
+      properties:
+        id:
+          example: 101
+          format: int64
+          type: integer
+        nome:
+          example: Disciplina de Desenvolvimento Web 1
+          type: string
+        numero_horas:
+          example: 200
+          type: integer
+        id_professor:
+          example: 8
+          format: int64
+          type: integer
+        criado_em:
+          example: 2025-04-05
+          type: string
+      required:
+      - id_professor
+      - nome
+      - numero_horas
+      type: object
+    Testes:
+      example:
+        tema: Teste Sobre Docker e Funcionalidades do Docker
+        criado_em: 2025-06-11
+        data: 2000-04-12
+        id: 1001
+        id_disciplina: 101
+      properties:
+        id:
+          example: 1001
+          format: int64
+          type: integer
+        tema:
+          example: Teste Sobre Docker e Funcionalidades do Docker
+          type: string
+        data:
+          example: 2000-04-12
+          type: string
+        id_disciplina:
+          example: 101
+          format: int64
+          type: integer
+        criado_em:
+          example: 2025-06-11
+          type: string
+      required:
+      - data
+      - id_disciplina
+      - tema
+      type: object
+    Resultados:
+      example:
+        id_teste: 1001
+        id: 10001
+        id_estudante: 2001
+        nota: 16
+      properties:
+        id:
+          example: 10001
+          format: int64
+          type: integer
+        nota:
+          example: 16
+          format: int64
+          type: integer
+        id_teste:
+          example: 1001
+          format: int64
+          type: integer
+        id_estudante:
+          example: 2001
+          format: int64
+          type: integer
+      required:
+      - id_estudante
+      - id_teste
+      - nota
+      type: object
+>>>>>>> ec03548fd7d7c6c15e8fe5621bf7530e7478be45
