@@ -59,5 +59,5 @@ module.exports = {
   inscricoesIdPUT,
   inscricoesIdDELETE,
   inscricoesPorDisciplinaGET,
-  inscricoesPorEstudanteGET
+  inscricoesPorEstudanteGET,
 };

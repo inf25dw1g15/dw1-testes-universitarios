@@ -1,8 +1,6 @@
 CREATE DATABASE gestao_testes;
 USE gestao_testes;
 
-
-
 CREATE TABLE utilizadores (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -49,7 +47,7 @@ CREATE TABLE inscricoes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_estudante INT,
     id_disciplina INT,
-    data_inscricao DATE DEFAULT NOW(),
+    data_inscricao DATE DEFAULT(NOW()),
     FOREIGN KEY (id_estudante) REFERENCES utilizadores(id),
     FOREIGN KEY (id_disciplina) REFERENCES disciplinas(id),
     UNIQUE (id_estudante, id_disciplina)
