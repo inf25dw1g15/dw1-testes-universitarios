@@ -1,4 +1,4 @@
-CREATE DATABASE gestao_testes;
+
 USE gestao_testes;
 
 CREATE TABLE utilizadores (

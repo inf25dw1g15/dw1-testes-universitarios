@@ -10,13 +10,15 @@ services:
       mysql:
         condition: service_healthy
     environment:
-      DB_HOST: mysql              # nome do serviço mysql
+      DB_HOST: mysql      
       DB_USER: root
       DB_PASSWORD: root
       DB_NAME: gestao_testes
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      - app-network
 
   mysql:
     image: mysql:8
@@ -34,6 +36,12 @@ services:
       retries: 10
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
 
 volumes:
   mysql_data:
+
+networks:
+  app-network:
