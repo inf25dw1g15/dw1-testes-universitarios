@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: api_gestao_testes
+    ports:
+      - "3000:3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql              # nome do serviço mysql
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: gestao_testes
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  mysql:
+    image: mysql:8
+    container_name: mysql_gestao_testes
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gestao_testes
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

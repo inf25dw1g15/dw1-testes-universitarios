@@ -1,11 +1,13 @@
-const mysql = require('mysql2/promise');
+const mysql = require("mysql2/promise");
 
-const db = mysql.createPool({
-  host: process.env.DB_HOST || 'mysql',
-  user: process.env.db_USER || 'root',
-  password: process.env.db_PASSWORD || 'root',
-  database: process.env.DB_NAME || 'gestao_testes',
-  port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
+const pool = mysql.createPool({
+  host: process.env.DB_HOST || "localhost",   // no Docker será "mysql"
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "root",
+  database: process.env.DB_NAME || "gestao_testes",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
-module.exports = db;
+module.exports = pool;
