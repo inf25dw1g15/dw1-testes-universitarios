@@ -77,7 +77,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nome\": \"Test12\",\r\n  \"email\": \"test12@umaia.pt\",\r\n  \"cargo\": \"Estudante\"\r\n}",
+							"raw": "{\r\n  \"nome\": \"Test13\",\r\n  \"email\": \"test13@umaia.pt\",\r\n  \"cargo\": \"Estudante\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -228,7 +228,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nome\": \"Novo teste2\",\r\n  \"email\": \"novoteste2@umaia.pt\",\r\n  \"cargo\": \"Professor\"\r\n}",
+							"raw": "{\r\n  \"nome\": \"Novo testeteste15\",\r\n  \"email\": \"novotesteteste15@umaia.pt\",\r\n  \"cargo\": \"Estudante\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1105,12 +1105,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/alunos/{{id_utilizador}}/disciplinas",
+							"raw": "{{base_url}}/utilizadores/cargo/Estudante/{{id_utilizador}}/disciplinas",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"alunos",
+								"utilizadores",
+								"cargo",
+								"Estudante",
 								"{{id_utilizador}}",
 								"disciplinas"
 							]
@@ -1124,14 +1126,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/estudantes/{{id_utilizador}}/classificacoes",
+							"raw": "{{base_url}}/utilizadores/Estudante/{{id_utilizador}}/resultados",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"estudantes",
+								"utilizadores",
+								"Estudante",
 								"{{id_utilizador}}",
-								"classificacoes"
+								"resultados"
 							]
 						}
 					},
@@ -1202,14 +1205,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/utilizadores/Estudante/{{id_inscricao}}/inscricoes",
+							"raw": "{{base_url}}/utilizadores/Estudante/{{id_utilizador}}/inscricoes",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"utilizadores",
 								"Estudante",
-								"{{id_inscricao}}",
+								"{{id_utilizador}}",
 								"inscricoes"
 							]
 						}
