@@ -102,13 +102,3 @@ Foi criado um ambiente dockerizado com:
 ## Discussão
 
 O projeto demonstra uma implementação sólida de uma API REST completa, com documentação rigorosa, validação robusta e integração contínua. A clara separação entre camadas e o uso de Docker contribuem para portabilidade e facilidade de manutenção. Os testes garantem consistência e fiabilidade dos endpoints.
-
-- **routingTests.js** - Runs through all the endpoints defined in the `openapi.yaml`, and constructs a dummy request to send to the server. Confirms that the response code is 200. At this point requests containing xml or formData fail - currently they are not supported in the router.
-- **additionalEndpointsTests.js** - A test file for all the endpoints that are defined outside the openapi.yaml scope. Confirms that these endpoints return a successful 200 response.
-
-
-Future tests should be written to ensure that the response of every request sent should conform to the structure defined in the `openapi.yaml`. This test will fail 100% initially, and the job of the development team will be to clear these tests.
-
-
-#### models/
-Currently a concept awaiting feedback. The idea is to have the objects defined in the openapi.yaml act as models which are passed between the different modules. This will conform the programmers to interact using defined objects, rather than loosely-defined JSON objects. Given the nature of JavaScript programmers, who want to work with their own bootstrapped parameters, this concept might not work. Keeping this here for future discussion and feedback.
